@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${cliente.idCliente != null ? 'Editar Cliente' : 'Nuevo Cliente'}">Nuevo Cliente</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('https://estaticos-cdn.prensaiberica.es/clip/9d5b7bed-8ef2-4764-987c-9219b486d1c9_alta-libre-aspect-ratio_default_0.jpg')
+            no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            padding-top: 60px; /* Para que el navbar no tape el contenido */
+        }
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            color: #D4AF37 !important;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        .card-header {
+            background: linear-gradient(to right, rgba(139, 69, 19, 0.9), rgba(160, 82, 45, 0.9));
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        .btn-gourmet {
+            background-color: #8B4513;
+            border-color: #8B4513;
+            color: white;
+        }
+        .btn-gourmet:hover {
+            background-color: #6b360f;
+            border-color: #6b360f;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #5a3e2b;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #d4c4b5;
+            padding: 0.6rem;
+        }
+        .form-control:focus {
+            border-color: #8B4513;
+            box-shadow: 0 0 0 0.2rem rgba(139, 69, 19, 0.25);
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.95); /* Transparencia para legibilidad */
+        }
+        .emoji-title {
+            font-size: 1.3rem;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+            <span class="navbar-brand">
+                <i class="fas fa-utensils emoji-title"></i> Sabor Gourmet
+            </span>
+        <div class="d-flex align-items-center text-light">
+            <span>Bienvenido, <span th:text="${#authentication.name}"></span></span>
+            <a href="/logout" class="btn btn-outline-light btn-sm ms-3">
+                <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+            </a>
+            <a href="/login?logout=true" class="btn btn-outline-light btn-sm ms-2">
+                <i class="fas fa-user-circle me-1"></i> Cambiar Usuario
+            </a>
+            <div th:if="${#authorization.expression('hasAnyRole(''ADMIN'',''MOZO'')')}">
+                <a href="/clientes" class="btn btn-outline-light btn-sm ms-2">
+                    👥 Clientes
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-header text-center">
+                    <span th:text="${cliente.idCliente != null ? '✏️ Editar Cliente' : '👤 Registrar Nuevo Cliente'}">👤 Registrar Cliente</span>
+                </div>
+                <div class="card-body p-4">
+                    <form th:object="${cliente}"
+                          th:action="@{${cliente.idCliente} != null ? '/clientes/actualizar' : '/clientes/guardar'}"
+                          method="post">
+
+                        <input type="hidden" th:if="${cliente.idCliente != null}" th:field="*{idCliente}" />
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-id-card me-2"></i> DNI *</label>
+                            <input type="text" class="form-control" th:field="*{dni}" required maxlength="8" placeholder="Ej: 12345678" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label"><i class="fas fa-user me-2"></i> Nombres *</label>
+                                <input type="text" class="form-control" th:field="*{nombres}" required placeholder="Ej: Ana María" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label"><i class="fas fa-user-friends me-2"></i> Apellidos *</label>
+                                <input type="text" class="form-control" th:field="*{apellidos}" required placeholder="Ej: López García" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-phone me-2"></i> Teléfono</label>
+                            <input type="text" class="form-control" th:field="*{telefono}" placeholder="Ej: 987654321" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label"><i class="fas fa-envelope me-2"></i> Correo Electrónico</label>
+                            <input type="email" class="form-control" th:field="*{correo}" placeholder="ejemplo@correo.com" />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-gourmet py-2">
+                                <i th:if="${cliente.idCliente != null}" class="fas fa-sync-alt me-2"></i>
+                                <i th:if="${cliente.idCliente == null}" class="fas fa-user-plus me-2"></i>
+                                <span th:text="${cliente.idCliente != null ? 'Actualizar Cliente' : 'Registrar Cliente'}">Registrar</span>
+                            </button>
+                            <a href="/clientes" class="btn btn-outline-secondary py-2">
+                                ← Volver al Listado
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
