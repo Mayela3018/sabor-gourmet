@@ -10,7 +10,7 @@ public class Mesa {
     private Long idMesa;
     private Integer numero;
     private Integer capacidad;
-    private String estado; // "disponible", "ocupada", etc.
+    private String estado; //
 
     // Getters y Setters
     public Long getIdMesa() { return idMesa; }

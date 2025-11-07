@@ -11,7 +11,7 @@ public class Bitacora {
     private Long idBitacora;
     private String accion;
     private String entidad;
-    private String usuario; // ← nuevo campo
+    private String usuario;
     private LocalDateTime fechaHora;
 
     // Getters y Setters

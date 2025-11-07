@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Clientes - Sabor Gourmet</title>
 
-    <!-- Bootstrap 5 -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Google Fonts -->
+
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: url('https://estaticos-cdn.prensaiberica.es/clip/9d5b7bed-8ef2-4764-987c-9219b486d1c9_alta-libre-aspect-ratio_default_0.jpg')
+            background: url('https://cache.marriott.com/content/dam/marriott-renditions/LIMAC/limac-sunset-dinner-2669-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=1336px:*')
             no-repeat center center fixed;
             background-size: cover;
             color: #333;
-            padding-top: 60px; /* Para que el navbar no tape el contenido */
+            padding-top: 60px;
         }
         .navbar-brand {
             font-family: 'Playfair Display', serif;
@@ -62,11 +62,25 @@
             border: none;
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            background: rgba(255, 255, 255, 0.95); /* Transparencia para legibilidad */
+            background: rgba(255, 255, 255, 0.95);
         }
         .emoji-title {
             font-size: 1.3rem;
             margin-right: 8px;
+        }
+        .action-buttons {
+            margin-top: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        @media (max-width: 576px) {
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .action-buttons .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -98,11 +112,8 @@
     <div class="row justify-content-center">
         <div class="col-lg-11">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <span><i class="fas fa-users me-2"></i> Lista de Clientes</span>
-                    <a href="/clientes/nuevo" class="btn btn-gourmet btn-sm">
-                        <i class="fas fa-user-plus me-1"></i> Nuevo Cliente
-                    </a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -144,6 +155,18 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+
+
+                    <div class="card-body pt-0">
+                        <div class="action-buttons">
+                            <a href="/mesas" class="btn btn-outline-secondary">
+                                ← Volver a Mesas
+                            </a>
+                            <a href="/clientes/nuevo" class="btn btn-gourmet">
+                                <i class="fas fa-user-plus me-1"></i> Nuevo Cliente
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
