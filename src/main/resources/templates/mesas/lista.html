@@ -116,6 +116,12 @@
             <div th:if="${#authorization.expression('hasAnyRole(''ADMIN'',''MOZO'')')}">
                 <a href="/clientes" class="btn btn-outline-light btn-sm ms-2">👥 Clientes</a>
             </div>
+
+            <!-- Botón Menú: SOLO para ADMIN -->
+            <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                <a href="/menu" class="btn btn-outline-light btn-sm ms-2">🍽️ Menú</a>
+            </div>
+
         </div>
     </div>
 </nav>

@@ -39,6 +39,8 @@ public class SecurityConfig {
                 .roles("CAJERO")
                 .build();
 
+
+
         return new InMemoryUserDetailsManager(admin, mozo, cajero);
     }
 
@@ -46,8 +48,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/clientes/**").hasAnyRole("ADMIN", "MOZO")   // 👈 NUEVO: acceso a clientes
+                        .requestMatchers("/clientes/**").hasAnyRole("ADMIN", "MOZO")
                         .requestMatchers("/mesas/**").hasAnyRole("ADMIN", "MOZO", "CAJERO")
+                        .requestMatchers("/menu/**").hasRole("ADMIN") // 👈 SOLO ADMIN puede gestionar el menú
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${plato.idPlato != null ? 'Editar Plato' : 'Nuevo Plato'}">Nuevo Plato</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80')
+            no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            padding-top: 60px;
+        }
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            color: #D4AF37 !important;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        .card-header {
+            background: linear-gradient(to right, rgba(139, 69, 19, 0.9), rgba(160, 82, 45, 0.9));
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        .btn-gourmet {
+            background-color: #8B4513;
+            border-color: #8B4513;
+            color: white;
+            width: 100%;
+        }
+        .btn-gourmet:hover {
+            background-color: #6b360f;
+            border-color: #6b360f;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #5a3e2b;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #d4c4b5;
+            padding: 0.6rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #8B4513;
+            box-shadow: 0 0 0 0.2rem rgba(139, 69, 19, 0.25);
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .emoji-title {
+            font-size: 1.3rem;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+            <span class="navbar-brand">
+                <i class="fas fa-utensils emoji-title"></i>Sabor Gourmet
+            </span>
+        <div class="d-flex align-items-center text-light">
+            <span>Bienvenido, <span th:text="${#authentication.name}"></span></span>
+            <a href="/logout" class="btn btn-outline-light btn-sm ms-3">
+                <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+            </a>
+            <a href="/login?logout=true" class="btn btn-outline-light btn-sm ms-2">
+                <i class="fas fa-user-circle me-1"></i> Cambiar Usuario
+            </a>
+            <a href="/mesas" class="btn btn-outline-light btn-sm ms-2">🪑 Mesas</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-header text-center">
+                    <span th:text="${plato.idPlato != null ? '✏️ Editar Plato' : '🍽️ Registrar Nuevo Plato'}">🍽️ Registrar Plato</span>
+                </div>
+                <div class="card-body p-4">
+                    <form th:object="${plato}"
+                          th:action="@{${plato.idPlato} != null ? '/menu/actualizar' : '/menu/guardar'}"
+                          method="post">
+
+                        <input type="hidden" th:if="${plato.idPlato != null}" th:field="*{idPlato}" />
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-tag me-2"></i> Nombre del Plato *</label>
+                            <input type="text" class="form-control" th:field="*{nombre}" required placeholder="Ej: Causa Rellena" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-tags me-2"></i> Tipo *</label>
+                            <select class="form-select" th:field="*{tipo}" required>
+                                <option value="">-- Seleccione --</option>
+                                <option value="entrada">🥗 Entrada</option>
+                                <option value="fondo">🍲 Fondo</option>
+                                <option value="postre">🧁 Postre</option>
+                                <option value="bebida">🥤 Bebida</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-coins me-2"></i> Precio (S/) *</label>
+                            <input type="number" step="0.01" class="form-control" th:field="*{precio}" required min="0" placeholder="Ej: 18.50" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label"><i class="fas fa-info-circle me-2"></i> Descripción</label>
+                            <textarea class="form-control" th:field="*{descripcion}" rows="3" placeholder="Ingredientes o detalles del plato"></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-gourmet py-2">
+                                <i th:if="${plato.idPlato != null}" class="fas fa-sync-alt me-2"></i>
+                                <i th:if="${plato.idPlato == null}" class="fas fa-plus-circle me-2"></i>
+                                <span th:text="${plato.idPlato != null ? 'Actualizar Plato' : 'Registrar Plato'}">Registrar</span>
+                            </button>
+                            <a href="/menu" class="btn btn-outline-secondary py-2">
+                                ← Volver al Menú
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
